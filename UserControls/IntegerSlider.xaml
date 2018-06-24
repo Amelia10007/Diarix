@@ -1,0 +1,24 @@
+﻿<UserControl
+    x:Class="Diarix.UserControls.IntegerSlider"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Diarix.UserControls"
+    xmlns:converter="using:Diarix.UserControls.Converters"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="50"
+    d:DesignWidth="200">
+    <UserControl.Resources>
+        <converter:Int32ToDoubleConverter x:Key="FromInt32ToDouble"/>
+    </UserControl.Resources>
+    <Grid>
+        <Slider VerticalAlignment="Center" Margin="5,0,5,0"
+                Value="{x:Bind Value,Converter={StaticResource FromInt32ToDouble},Mode=TwoWay}"
+                Minimum="{x:Bind Minimum,Converter={StaticResource FromInt32ToDouble},Mode=OneWay}"
+                Maximum="{x:Bind Maximum,Converter={StaticResource FromInt32ToDouble},Mode=OneWay}"
+                TickPlacement="BottomRight"
+                TickFrequency="{x:Bind TickFrequency,Converter={StaticResource FromInt32ToDouble},Mode=OneWay}">
+        </Slider>
+    </Grid>
+</UserControl>

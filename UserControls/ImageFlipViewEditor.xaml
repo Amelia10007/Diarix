@@ -1,0 +1,139 @@
+﻿<UserControl
+    x:Class="Diarix.UserControls.ImageFlipViewEditor"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Diarix.UserControls"
+    xmlns:converter="using:Diarix.UserControls.Converters"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+    <UserControl.Resources>
+        <Style x:Key="SliderStyle" TargetType="local:IntegerSlider">
+            <Setter Property="Width" Value="300"/>
+            <Setter Property="Height" Value="30"/>
+        </Style>
+        <x:Double x:Key="SizeSliderMinWidth">300</x:Double>
+        <converter:SizeToStringConverter x:Key="converter"/>
+    </UserControl.Resources>
+    <Grid Height="60">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <AppBarButton Grid.Column="0" Icon="Add"
+                      Label="画像を追加"
+                      IsCompact="{x:Bind IsCompactModeEnabled,Mode=OneWay}"
+                      Tapped="AddButton_Tapped"
+                      PreviewKeyDown="AddButton_KeyDown"/>
+        <AppBarButton Grid.Column="1" Icon="Add"
+                      Label="編集と追加"
+                      IsCompact="{x:Bind IsCompactModeEnabled,Mode=OneWay}"
+                      ToolTipService.ToolTip="画像を好きなサイズに加工して保存します．"
+                      Tapped="ResizeAndAddButton_Tapped"
+                      PreviewKeyDown="ResizeAndAddButton_KeyDown"/>
+        <AppBarButton Grid.Column="2" Icon="Cancel"
+                      Label="一枚削除"
+                      IsCompact="{x:Bind IsCompactModeEnabled,Mode=OneWay}"
+                      ToolTipService.ToolTip="フリップビューに現在表示されている画像を削除します．"
+                      Tapped="DeleteButton_Tapped"
+                      PreviewKeyDown="DeleteButton_KeyDown"/>
+        <AppBarButton Grid.Column="3" Icon="Delete"
+                      Label="全削除"
+                      IsCompact="{x:Bind IsCompactModeEnabled,Mode=OneWay}"
+                      ToolTipService.ToolTip="フリップビュー中の画像をすべて削除します．"
+                      Tapped="DeleteAllButton_Tapped"
+                      PreviewKeyDown="DeleteAllButton_KeyDown"/>
+        <Grid Grid.Column="4">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Row="0" Grid.Column="0" HorizontalAlignment="Right" Text="幅"/>
+            <TextBlock Grid.Row="1" Grid.Column="0" HorizontalAlignment="Right" Text="高さ"/>
+            <TextBlock Grid.Row="0" Grid.Column="1" Text="{x:Bind ImageFlipViewWidth,Mode=OneWay,Converter={StaticResource converter}}"/>
+            <TextBlock Grid.Row="1" Grid.Column="1" Text="{x:Bind ImageFlipViewHeight,Mode=OneWay,Converter={StaticResource converter}}"/>
+            <Viewbox Grid.Row="0" Grid.Column="2">
+                <local:IntegerSlider Style="{StaticResource SliderStyle}"
+                                     Minimum="{StaticResource ImageFlipViewSizeMin}" Maximum="{StaticResource ImageFlipViewSizeMax}"
+                                     Value="{x:Bind ImageFlipViewWidth,Mode=TwoWay}"/>
+            </Viewbox>
+            <Viewbox Grid.Row="1" Grid.Column="2">
+                <local:IntegerSlider Style="{StaticResource SliderStyle}"
+                                     Minimum="{StaticResource ImageFlipViewSizeMin}" Maximum="{StaticResource ImageFlipViewSizeMax}"
+                                     Value="{x:Bind ImageFlipViewHeight,Mode=TwoWay}"/>
+            </Viewbox>
+        </Grid>
+        <ScrollViewer Grid.Column="5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                      Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+                      BorderBrush="Gray" BorderThickness="1"
+                      HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"
+                      HorizontalScrollMode="Auto" VerticalScrollMode="Auto">
+            <TextBox AcceptsReturn="True"
+                     Text="{x:Bind ImageExplanation,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+        </ScrollViewer>
+    </Grid>
+    <!--
+    <StackPanel Orientation="Horizontal">
+        <AppBarButton Icon="Add"
+                      Label="画像を追加"
+                      IsCompact="{x:Bind IsCompactModeEnabled,Mode=OneWay}"
+                      Tapped="AddButton_Tapped"
+                      PreviewKeyDown="AddButton_KeyDown"/>
+        <AppBarButton Icon="Add"
+                      Label="編集と追加"
+                      IsCompact="{x:Bind IsCompactModeEnabled,Mode=OneWay}"
+                      ToolTipService.ToolTip="画像を好きなサイズに加工して保存します．"
+                      Tapped="ResizeAndAddButton_Tapped"
+                      PreviewKeyDown="ResizeAndAddButton_KeyDown"/>
+        <AppBarButton Icon="Cancel"
+                      Label="一枚削除"
+                      IsCompact="{x:Bind IsCompactModeEnabled,Mode=OneWay}"
+                      ToolTipService.ToolTip="フリップビューに現在表示されている画像を削除します．"
+                      Tapped="DeleteButton_Tapped"
+                      PreviewKeyDown="DeleteButton_KeyDown"/>
+        <AppBarButton Icon="Delete"
+                      Label="全削除"
+                      IsCompact="{x:Bind IsCompactModeEnabled,Mode=OneWay}"
+                      ToolTipService.ToolTip="フリップビュー中の画像をすべて削除します．"
+                      Tapped="DeleteAllButton_Tapped"
+                      PreviewKeyDown="DeleteAllButton_KeyDown"/>
+        <Grid VerticalAlignment="Center">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Row="0" Grid.Column="0" HorizontalAlignment="Right" Text="幅"/>
+            <TextBlock Grid.Row="1" Grid.Column="0" HorizontalAlignment="Right" Text="高さ"/>
+            <TextBlock Grid.Row="0" Grid.Column="1" Text="{x:Bind ImageFlipViewWidth,Mode=OneWay,Converter={StaticResource converter}}"/>
+            <TextBlock Grid.Row="1" Grid.Column="1" Text="{x:Bind ImageFlipViewHeight,Mode=OneWay,Converter={StaticResource converter}}"/>
+            <Viewbox Grid.Row="0" Grid.Column="2">
+                <local:IntegerSlider Style="{StaticResource SliderStyle}"
+                                     Minimum="{StaticResource ImageFlipViewSizeMin}" Maximum="{StaticResource ImageFlipViewSizeMax}"
+                                     Value="{x:Bind ImageFlipViewWidth,Mode=TwoWay}"/>
+            </Viewbox>
+            <Viewbox Grid.Row="1" Grid.Column="2">
+                <local:IntegerSlider Style="{StaticResource SliderStyle}"
+                                     Minimum="{StaticResource ImageFlipViewSizeMin}" Maximum="{StaticResource ImageFlipViewSizeMax}"
+                                     Value="{x:Bind ImageFlipViewHeight,Mode=TwoWay}"/>
+            </Viewbox>
+        </Grid>
+        <TextBox HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                 AcceptsReturn="True"
+                 Text="{x:Bind ImageExplanation,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+    </StackPanel>
+    -->
+</UserControl>

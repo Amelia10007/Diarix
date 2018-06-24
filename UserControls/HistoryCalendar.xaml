@@ -1,0 +1,14 @@
+﻿<UserControl
+    x:Class="Diarix.UserControls.HistoryCalendar"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Diarix.UserControls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+    <CalendarView AllowFocusOnInteraction="True" SelectionMode="Single"
+                  MinDate="{x:Bind minDate,Mode=OneWay}"
+                  MaxDate="{x:Bind maxDate,Mode=OneWay}"
+                  CalendarViewDayItemChanging="CalendarView_CalendarViewDayItemChanging"
+                  SelectedDatesChanged="CalendarView_SelectedDatesChanged"/>
+</UserControl>

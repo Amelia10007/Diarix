@@ -1,0 +1,225 @@
+﻿<Page
+    x:Class="Diarix.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Diarix"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:uc="using:Diarix.UserControls"
+    xmlns:conv="using:Diarix.Converters"
+    mc:Ignorable="d"
+    NavigationCacheMode="Required"
+    AllowDrop="True"
+    DragOver="Page_DragOver"
+    Drop="Page_Drop">
+    <Page.Resources>
+        <Style x:Key="paneItemExplanationTextStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+        </Style>
+        <Style x:Key="listItemStyle" TargetType="ListViewItem">
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+            <Setter Property="Margin" Value="2"/>
+        </Style>
+        <conv:SelectableDatesConverter x:Key="dateConverter"/>
+        <conv:SplitViewPaneContentVisibilityConverter x:Key="paneVisibilityConverter"/>
+        <conv:EditBarContentVisibilityConverter x:Key="editorVisibilityConverter"/>
+        <conv:EditAvailabilityConverter x:Key="addButtonVisibilityConverter"/>
+    </Page.Resources>
+    <SplitView x:Name="splitView" Background="{StaticResource BackgroundBrush}" PaneBackground="{StaticResource BackgroundBrush}">
+        <SplitView.Pane>
+            <Grid Margin="5">
+                <Grid Visibility="{x:Bind VisibleSplitViewPaneContent,Converter={StaticResource paneVisibilityConverter},ConverterParameter=Calendar,Mode=OneWay}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0"
+                               Style="{StaticResource paneItemExplanationTextStyle}"
+                               Text="過去に書いた日記へジャンプ"/>
+                    <uc:HistoryCalendar Grid.Row="1"
+                                        SelectableDates="{x:Bind ExistingDiaryDates,Converter={StaticResource dateConverter},Mode=OneWay}"
+                                        DateSelected="HistoryCalendar_DateSelected"/>
+                </Grid>
+                <Grid Visibility="{x:Bind VisibleSplitViewPaneContent,Converter={StaticResource paneVisibilityConverter},ConverterParameter=Search,Mode=OneWay}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0"
+                               Style="{StaticResource paneItemExplanationTextStyle}"
+                               Text="過去に書いた日記をキーワード検索"/>
+                    <uc:DiarySearcher Grid.Row="1"
+                                      IsCompactModeEnabled="{x:Bind IsCompactModeEnabled,Mode=OneWay}"
+                                      SearchButtonTapped="DiarySearcher_SearchButtonTapped"
+                                      SearchResultTapped="DiarySearcher_SearchResultTapped"/>
+                </Grid>
+                <uc:SettingManager Visibility="{x:Bind VisibleSplitViewPaneContent,Converter={StaticResource paneVisibilityConverter},ConverterParameter=Setting,Mode=OneWay}"
+                                   IsCompactButtonEnabled="{x:Bind IsCompactModeEnabled,Mode=OneWay}"
+                                   IsSkipPasswordInputEnabled="{x:Bind IsSkipPasswordInput,Mode=OneWay}"
+                                   CompactButtonToggled="SettingManager_CompactButtonToggled"
+                                   PasswordSkipToggled="SettingManager_PasswordSkipToggled"
+                                   NewPasswordDetermined="SettingManager_NewPasswordDetermined"/>
+            </Grid>
+        </SplitView.Pane>
+        <SplitView.Content>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <!--SplitView.Paneへ移動するためのボタン-->
+                <Grid Grid.Column="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <ToggleButton Grid.Row="0" VerticalAlignment="Center"
+                                  Background="#00000000"
+                                  ToolTipService.ToolTip="過去に書いた日記の一覧を表示（Ctrl+H）"
+                                  Checked="CalendarToggleButton_Checked">
+                        <SymbolIcon Symbol="Calendar"/>
+                    </ToggleButton>
+                    <ToggleButton Grid.Row="1" VerticalAlignment="Center"
+                                  Background="#00000000"
+                                  ToolTipService.ToolTip="全ての日記から特定の言葉を検索（Ctrl+F）"
+                                  Checked="SearchToggleButton_Checked">
+                        <SymbolIcon Symbol="Zoom"/>
+                    </ToggleButton>
+                    <ToggleButton Grid.Row="2" VerticalAlignment="Center"
+                                  Background="#00000000"
+                                  ToolTipService.ToolTip="設定を変更"
+                                  Checked="SettingToggleButton_Checked">
+                        <SymbolIcon Symbol="Setting"/>
+                    </ToggleButton>
+                </Grid>
+                <Grid Grid.Column="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+                    <!--エディットバー-->
+                    <uc:ParagraphEditor x:Name="paragraphEditor" x:Load="False"
+                                        Grid.Row="0" HorizontalAlignment="Stretch"
+                                        Visibility="{x:Bind VisibleEditBarContent,Converter={StaticResource editorVisibilityConverter},ConverterParameter=Paragraph,Mode=OneWay}"
+                                        IsCompactModeEnabled="{x:Bind IsCompactModeEnabled,Mode=OneWay}"
+                                        ParagraphFontSizeChanged="paragraphEditor_ParagraphFontSizeChanged"
+                                        ParagraphFontColorChanged="paragraphEditor_ParagraphFontColorChanged"
+                                        ParagraphBoldChanged="paragraphEditor_ParagraphBoldChanged"
+                                        ParagraphItalicChanged="paragraphEditor_ParagraphItalicChanged"
+                                        ParagraphDeleted="paragraphEditor_ParagraphDeleted"/>
+                    <uc:ImageFlipViewEditor x:Name="imageFlipViewEditor" x:Load="False"
+                                            Grid.Row="0" HorizontalAlignment="Stretch"
+                                            Visibility="{x:Bind VisibleEditBarContent,Converter={StaticResource editorVisibilityConverter},ConverterParameter=ImageFlipView,Mode=OneWay}"
+                                            IsCompactModeEnabled="{x:Bind IsCompactModeEnabled,Mode=OneWay}"
+                                            FlipViewWidthChanged="imageFlipViewEditor_FlipViewWidthChanged"
+                                            FlipViewHeightChanged="imageFlipViewEditor_FlipViewHeightChanged"
+                                            ImageAdded="imageFlipViewEditor_ImageAdded"
+                                            ImageResizedAndAdded="imageFlipViewEditor_ImageResizedAndAdded"
+                                            ImageDeleted="imageFlipViewEditor_ImageDeleted"
+                                            ImageExplanationChanged="imageFlipViewEditor_ImageExplanationChanged"
+                                            FlipViewDeleted="imageFlipViewEditor_FlipViewDeleted"/>
+                    <!--
+                    <uc:MediaPlayerEditor x:Name="mediaPlayerEditor" x:Load="False"
+                                          Grid.Row="0" HorizontalAlignment="Stretch"
+                                          Visibility="{x:Bind VisibleEditBarContent,Converter={StaticResource editorVisibilityConverter},ConverterParameter=Media,Mode=OneWay}"
+                                          IsCompactModeEnabled="{x:Bind IsCompactModeEnabled,Mode=OneWay}"
+                                          MediaDeleted="mediaPlayerEditor_MediaDeleted"/>
+                    -->
+                    <uc:HyperLinkEditor x:Name="hyperLinkEditor" x:Load="False"
+                                        Grid.Row="0" HorizontalAlignment="Stretch"
+                                        Visibility="{x:Bind VisibleEditBarContent,Converter={StaticResource editorVisibilityConverter},ConverterParameter=HyperLink,Mode=OneWay}"
+                                        IsCompactModeEnabled="{x:Bind IsCompactModeEnabled,Mode=OneWay}"
+                                        NavigateUriChanged="hyperLinkEditor_NavigateUriChanged"
+                                        ExplanationTextChanged="hyperLinkEditor_ExplanationTextChanged"
+                                        HyperLinkDeleted="hyperLinkEditor_HyperLinkDeleted"/>
+                    <!--日記表示エリア-->
+                    <ScrollViewer Grid.Row="1" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+                                  BorderBrush="Gray" BorderThickness="1"
+                                  HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"
+                                  HorizontalScrollMode="Auto" VerticalScrollMode="Auto">
+                        <ListView AllowFocusOnInteraction="True"
+                                  ItemContainerStyle="{StaticResource listItemStyle}"
+                                  SelectionMode="None"
+                                  ItemsSource="{x:Bind diaryEntries,Mode=OneWay}">
+                            <ListView.ItemTemplate>
+                                <DataTemplate x:DataType="local:DiaryEntry">
+                                    <ContentPresenter HorizontalContentAlignment="Stretch"
+                                                      Content="{x:Bind FrameworkElement}"/>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </ScrollViewer>
+                    <Grid Grid.Row="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0"
+                               HorizontalAlignment="Stretch" VerticalAlignment="Bottom"
+                               Text="{x:Bind Message,Mode=OneWay}"/>
+                        <StackPanel Grid.Column="1" Orientation="Horizontal">
+                            <AppBarButton Icon="Save"
+                                          Label="保存"
+                                          ToolTipService.ToolTip="今日の日記の変更点をすべて保存します(Ctrl+S)．"
+                                          IsCompact="{x:Bind IsCompactModeEnabled,Mode=OneWay}"
+                                          Visibility="{x:Bind IsEditEnabled,Converter={StaticResource addButtonVisibilityConverter},Mode=OneWay}"
+                                          Tapped="SaveButton_Tapped"
+                                          PreviewKeyDown="SaveButton_KeyDown"/>
+                            <AppBarButton x:Uid="AddParagraphButton"
+                                          Icon="Edit"
+                                          Label="段落追加"
+                                          ToolTipService.ToolTip="字体や色を自由に設定できる段落を日記の末尾に追加します(Ctrl+T)．"
+                                          IsCompact="{x:Bind IsCompactModeEnabled,Mode=OneWay}"
+                                          Visibility="{x:Bind IsEditEnabled,Converter={StaticResource addButtonVisibilityConverter},Mode=OneWay}"
+                                          Tapped="AddParagraphButton_Tapped"
+                                          PreviewKeyDown="AddParagraphButton_KeyDown"/>
+                            <AppBarButton Icon="Camera"
+                                          Label="画像追加"
+                                          ToolTipService.ToolTip="日記の末尾に写真を追加します(Ctrl+I)．"
+                                          IsCompact="{x:Bind IsCompactModeEnabled,Mode=OneWay}"
+                                          Visibility="{x:Bind IsEditEnabled,Converter={StaticResource addButtonVisibilityConverter},Mode=OneWay}"
+                                          Tapped="AddImageButton_Tapped"
+                                          PreviewKeyDown="AddImageButton_KeyDown"/>
+                            <AppBarButton Icon="AttachCamera"
+                                          Label="編集と追加"
+                                          ToolTipService.ToolTip="写真を好きなサイズに加工してから日記に追加します(Ctrl+J)．"
+                                          IsCompact="{x:Bind IsCompactModeEnabled,Mode=OneWay}"
+                                          Visibility="{x:Bind IsEditEnabled,Converter={StaticResource addButtonVisibilityConverter},Mode=OneWay}"
+                                          Tapped="ResizeAndAddImageButton_Tapped"
+                                          PreviewKeyDown="ResizeAndAddImageButton_KeyDown"/>
+                            <!--<AppBarButton Icon="Audio"
+                                          Label="音楽"
+                                          ToolTipService.ToolTip="日記に音楽を追加します(Ctrl+M)．"
+                                          IsCompact="{x:Bind IsCompactModeEnabled,Mode=OneWay}"
+                                          Visibility="{x:Bind IsEditEnabled,Converter={StaticResource addButtonVisibilityConverter},Mode=OneWay}"
+                                          Tapped="AddMediaButton_Tapped"/>
+                            -->
+                            <AppBarButton Icon="Globe"
+                                          Label="リンク"
+                                          ToolTipService.ToolTip="日記にリンクを追加します(Ctrl+L)．"
+                                          IsCompact="{x:Bind IsCompactModeEnabled,Mode=OneWay}"
+                                          Visibility="{x:Bind IsEditEnabled,Converter={StaticResource addButtonVisibilityConverter},Mode=OneWay}"
+                                          Tapped="AddHyperLinkButton_Tapped"
+                                          PreviewKeyDown="AddHyperLinkButton_KeyDown"/>
+                            <AppBarButton Icon="Previous"
+                                          Label="前の日記へ"
+                                          ToolTipService.ToolTip="ひとつ前の日記へ移動します(Ctrl+P)．"
+                                          IsCompact="{x:Bind IsCompactModeEnabled,Mode=OneWay}"
+                                          Tapped="PreviousDiaryButton_Tapped"
+                                          PreviewKeyDown="PreviousDiaryButton_KeyDown"/>
+                            <AppBarButton Icon="Next"
+                                          Label="次の日記へ"
+                                          ToolTipService.ToolTip="ひとつ後の日記へ移動します(Ctrl+N)．"
+                                          IsCompact="{x:Bind IsCompactModeEnabled,Mode=OneWay}"
+                                          Tapped="NextDiaryButton_Tapped"
+                                          PreviewKeyDown="NextDiaryButton_KeyDown"/>
+                        </StackPanel>
+                    </Grid>
+                </Grid>
+            </Grid>
+        </SplitView.Content>
+    </SplitView>
+</Page>

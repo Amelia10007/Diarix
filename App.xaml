@@ -1,0 +1,20 @@
+﻿<Application
+    x:Class="Diarix.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Diarix"
+    RequestedTheme="Light">
+    <Application.Resources>
+        <x:Int32 x:Key="DiaryYearMin">2013</x:Int32>
+        <x:Int32 x:Key="DiaryMonthMin">1</x:Int32>
+        <x:Int32 x:Key="DiaryDayMin">1</x:Int32>
+        <x:Int32 x:Key="ParagraphFontSizeMin">5</x:Int32>
+        <x:Int32 x:Key="ParagraphFontSizeMax">100</x:Int32>
+        <x:Int32 x:Key="ParagraphFontSizeDefault">15</x:Int32>
+        <Color x:Key="ParagraphFontColorDefault">#FF000000</Color>
+        <x:Int32 x:Key="ImageFlipViewSizeMin">50</x:Int32>
+        <x:Int32 x:Key="ImageFlipViewSizeMax">2000</x:Int32>
+        <x:Int32 x:Key="ImageFlipViewSizeDefault">300</x:Int32>
+        <SolidColorBrush x:Key="BackgroundBrush">#FFEEFFDD</SolidColorBrush>
+    </Application.Resources>
+</Application>

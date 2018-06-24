@@ -1,0 +1,40 @@
+﻿<Page
+    x:Class="Diarix.StartPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Diarix"
+    xmlns:UIXaml="using:Windows.UI.Xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d" Loaded="Page_Loaded" Background= "{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Page.Resources>
+        <UIXaml:Thickness x:Key="PasswordFormMargin">10</UIXaml:Thickness>
+        <UIXaml:Thickness x:Key="ButtonMargin">40</UIXaml:Thickness>
+        <Style TargetType="Button" x:Key="ButtonStyle">
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="Margin" Value="{StaticResource ButtonMargin}"/>
+            <Setter Property="Width" Value="100"/>
+        </Style>
+    </Page.Resources>
+    <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+        <TextBlock HorizontalAlignment="Center" Margin="{StaticResource PasswordFormMargin}"
+                   Text="パスワードを入力してください．"/>
+        <PasswordBox HorizontalAlignment="Center" Margin="{StaticResource PasswordFormMargin}" Width="300"
+                     InputScope="Password"
+                     Password="{x:Bind password,Mode=TwoWay}"
+                     KeyDown="PasswordBox_KeyDown"/>
+        <CheckBox HorizontalAlignment="Center" Margin="{StaticResource PasswordFormMargin}"
+                  IsChecked="{x:Bind isSkipPasswordInput,Mode=TwoWay}"
+                  Content="次回以降パスワード入力をスキップ（この設定は後から変更できます）"
+                  KeyDown="CheckBox_KeyDown"/>
+        <TextBlock HorizontalAlignment="Center" Margin="{StaticResource PasswordFormMargin}"/>
+        <Button Style="{StaticResource ButtonStyle}"
+                IsEnabled="{x:Bind isOkButtonEnabled,Mode=OneWay}"
+                Content="OK"
+                Tapped="OkButton_Tapped"
+                KeyDown="OkButton_KeyDown"/>
+        <TextBlock HorizontalAlignment="Center" Margin="{StaticResource PasswordFormMargin}"
+                   Text="{x:Bind message,Mode=OneWay}"
+                   Foreground="{x:Bind messageBrush,Mode=OneWay}"/>
+    </StackPanel>
+</Page>

@@ -1,0 +1,47 @@
+﻿<ContentDialog
+    x:Class="Diarix.ContentDialogs.CheckToSaveDiaryDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Diarix.ContentDialogs"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Title="確認">
+    <ContentDialog.Resources>
+        <Style x:Key="ButtonStyle" TargetType="Button">
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="Width" Value="100"/>
+            <Setter Property="Margin" Value="5,0,5,0"/>
+            <Setter Property="BorderBrush" Value="Gray"/>
+            <Setter Property="Background" Value="AliceBlue"/>
+        </Style>
+    </ContentDialog.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
+        </Grid.ColumnDefinitions>
+        <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Text="この日記の内容は変更されています．保存しますか？"/>
+        <Button Grid.Row="1" Grid.Column="0"
+                Style="{StaticResource ButtonStyle}"
+                Content="はい"
+                Tapped="SaveButton_Tapped"
+                KeyDown="SaveButton_KeyDown"/>
+        <Button Grid.Row="1" Grid.Column="1"
+                Style="{StaticResource ButtonStyle}"
+                Content="いいえ"
+                Tapped="DontSaveButton_Tapped"
+                KeyDown="DontSaveButton_KeyDown"/>
+        <Button Grid.Row="1" Grid.Column="2"
+                Style="{StaticResource ButtonStyle}"
+                Visibility="{x:Bind CancelButtonVisibility,Mode=OneWay}"
+                Content="キャンセル"
+                Tapped="CancelButton_Tapped"
+                KeyDown="CancelButton_KeyDown"/>
+    </Grid>
+</ContentDialog>

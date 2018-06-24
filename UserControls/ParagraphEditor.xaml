@@ -1,0 +1,67 @@
+﻿<UserControl
+    x:Class="Diarix.UserControls.ParagraphEditor"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Diarix.UserControls"
+    xmlns:converter="using:Diarix.UserControls.Converters"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <x:Int32 x:Key="FontSizeTickFrequency">5</x:Int32>
+        <converter:BooleanToBackgroundConverter x:Key="BooleanToBrush"/>
+        <converter:ParagraphFontColorToGridBackgroundConverter x:Key="ToSolidBrushConverter"/>
+    </UserControl.Resources>
+    <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
+        <local:IntegerSlider MinWidth="200" VerticalAlignment="Center"
+                             Value="{x:Bind ParagraphFontSize,Mode=TwoWay}"
+                             Minimum="{StaticResource ParagraphFontSizeMin}" Maximum="{StaticResource ParagraphFontSizeMax}"
+                             TickFrequency="{StaticResource FontSizeTickFrequency}"
+                             ToolTipService.ToolTip="段落中の文字のサイズを変更できます．"/>
+        <AppBarButton Icon="FontIncrease" VerticalAlignment="Center"
+                      Label="拡大"
+                      IsCompact="{x:Bind IsCompactModeEnabled,Mode=OneWay}"
+                      Tapped="ParagraphFontSizeNext_Tapped"
+                      PreviewKeyDown="ParagraphFontSizeNext_KeyDown"/>
+        <AppBarButton Icon="FontDecrease" VerticalAlignment="Center"
+                      IsCompact="{x:Bind IsCompactModeEnabled,Mode=OneWay}"
+                      Label="縮小"
+                      Tapped="ParagraphFontSizePrevious_Tapped"
+                      PreviewKeyDown="ParagraphFontSizePrevious_KeyDown"/>
+        <AppBarButton Icon="FontSize" VerticalAlignment="Center"
+                      Label="元に戻す"
+                      IsCompact="{x:Bind IsCompactModeEnabled,Mode=OneWay}"
+                      Tapped="ParagraphFontSizeDefault_Tapped"
+                      PreviewKeyDown="ParagraphFontSizeDefault_KeyDown"/>
+        <AppBarButton Icon="Bold" VerticalAlignment="Center"
+                      Label="太字"
+                      Background="{x:Bind ParagraphBold,Converter={StaticResource BooleanToBrush},Mode=OneWay}"
+                      IsCompact="{x:Bind IsCompactModeEnabled,Mode=OneWay}"
+                      Tapped="BoldButton_Tapped"
+                      PreviewKeyDown="BoldButton_KeyDown"/>
+        <AppBarButton Icon="Italic" VerticalAlignment="Center"
+                      Label="斜体"
+                      Background="{x:Bind ParagraphItalic,Converter={StaticResource BooleanToBrush},Mode=OneWay}"
+                      IsCompact="{x:Bind IsCompactModeEnabled,Mode=OneWay}"
+                      Tapped="ItalicButton_Tapped"
+                      PreviewKeyDown="ItalicButton_KeyDown"/>
+        <AppBarButton VerticalAlignment="Center"
+                      Icon="Previous"
+                      Label="色変更"
+                      Foreground="{x:Bind ParagraphFontColor,Converter={StaticResource ToSolidBrushConverter},Mode=OneWay}"
+                      Tapped="ChangeColorToPreviousButton_Tapped"
+                      PreviewKeyDown="ChangeColorToPreviousButton_KeyDown"/>
+        <AppBarButton VerticalAlignment="Center"
+                      Icon="Next"
+                      Label="色変更"
+                      Foreground="{x:Bind ParagraphFontColor,Converter={StaticResource ToSolidBrushConverter},Mode=OneWay}"
+                      Tapped="ChangeColorToNextButton_Tapped"
+                      PreviewKeyDown="ChangeColorToNextButton_KeyDown"/>
+        <AppBarButton Icon="Delete" VerticalAlignment="Center"
+                      Label="段落削除"
+                      IsCompact="{x:Bind IsCompactModeEnabled,Mode=OneWay}"
+                      Tapped="ParagraphDeleteButton_Tapped"
+                      PreviewKeyDown="ParagraphDeleteButton_KeyDown"/>
+    </StackPanel>
+</UserControl>

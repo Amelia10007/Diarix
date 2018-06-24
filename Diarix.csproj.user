@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <AppxPackageIsForStore>True</AppxPackageIsForStore>
+    <AppxShowAllApps>False</AppxShowAllApps>
+    <AppxBuildConfigurationSelection>x86|x64</AppxBuildConfigurationSelection>
+    <PackageOptionalProjectsInIdeBuilds>False</PackageOptionalProjectsInIdeBuilds>
+    <Source>C:\Users\kohama\Desktop\icon.png</Source>
+    <SmallTileSource>C:\Users\kohama\Desktop\icon.png</SmallTileSource>
+    <MediumTileSource>C:\Users\kohama\Desktop\icon.png</MediumTileSource>
+    <WideTileSource>C:\Users\kohama\Desktop\icon.png</WideTileSource>
+    <LargeTileSource>C:\Users\kohama\Desktop\icon.png</LargeTileSource>
+    <AppIconSource>C:\Users\kohama\Desktop\icon.png</AppIconSource>
+    <SplashScreenSource>C:\Users\kohama\Desktop\icon.png</SplashScreenSource>
+    <PackageLogoSource>C:\Users\kohama\Desktop\icon.png</PackageLogoSource>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|ARM'">
+    <DeviceId>30F105C9-681E-420b-A277-7C086EAD8A4E</DeviceId>
+    <UseEmulator>true</UseEmulator>
+  </PropertyGroup>
+</Project>

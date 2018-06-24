@@ -1,0 +1,38 @@
+﻿<UserControl
+    x:Class="Diarix.UserControls.HyperLinkEditor"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Diarix.UserControls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+    <UserControl.Resources>
+        <Style x:Key="TextBoxStyle" TargetType="TextBox">
+            <Setter Property="Margin" Value="10,0,10,0"/>
+        </Style>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="65"/>
+            <ColumnDefinition Width="65"/>
+        </Grid.ColumnDefinitions>
+        <TextBox Grid.Column="0" VerticalAlignment="Stretch"
+                Style="{StaticResource TextBoxStyle}"
+                Text="{x:Bind NavigateText,Mode=TwoWay}"
+                Foreground="{x:Bind navigateTextForeground,Mode=OneWay}"
+                TextChanged="NavigateText_Changed"/>
+        <TextBox Grid.Column="1" VerticalAlignment="Stretch" AcceptsReturn="True"
+                     Style="{StaticResource TextBoxStyle}"
+                     Text="{x:Bind ExplanationText,Mode=TwoWay}"
+                     TextChanged="ExplanationText_Changed"/>
+        <HyperlinkButton Grid.Column="2" Content="リンク確認"
+                         NavigateUri="{x:Bind NavigateUri,Mode=OneWay}"/>
+        <AppBarButton Grid.Column="3" Icon="Delete"
+                      IsCompact="{x:Bind IsCompactModeEnabled,Mode=OneWay}"
+                      Label="リンク削除"
+                      Tapped="DeleteButton_Tapped"
+                      PreviewKeyDown="DeleteButton_KeyDown"/>
+    </Grid>
+</UserControl>

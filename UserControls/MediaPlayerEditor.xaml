@@ -1,0 +1,14 @@
+﻿<UserControl
+    x:Class="Diarix.UserControls.MediaPlayerEditor"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Diarix.UserControls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+    <AppBarButton VerticalAlignment="Center" Icon="Delete"
+                      Label="音楽削除"
+                      IsCompact="{x:Bind IsCompactModeEnabled,Mode=OneWay}"
+                      ToolTipService.ToolTip="このミュージックを日記から削除します．"
+                      Tapped="DeleteButton_Tapped"/>
+</UserControl>
